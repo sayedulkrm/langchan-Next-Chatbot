@@ -160,11 +160,11 @@ export default function Home() {
     return (
         <>
             <Layout>
-                <div className="flex flex-col h-[100vh] w-full relative bg-slate-700">
+                <div className="flex flex-col h-[100vh] w-full relative">
                     <div className={styles.main}>
                         {chatOpen ? (
                             <div className={`${styles.sidebar}`}>
-                                <div className="chatbox-header flex bg-[#1E6BD8] lg:h-20 sm:h-16 gap-2 justify-between items-center rounded-t-xl p-3 text-white">
+                                <div className="chatbox-header flex bg-[#1E6BD8] lg:h-20 sm:h-16 gap-2 justify-between items-center lg:rounded-t-xl sm:rounded-none p-3 text-white">
                                     <div className="chatbox-image-header flex items-center justify-start gap-2">
                                         <img
                                             src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png"
@@ -297,6 +297,10 @@ export default function Home() {
                                     <div className={styles.cloudform}>
                                         <form
                                             onSubmit={handleSubmit}
+                                            style={{
+                                                border: "1px solid lightgray",
+                                                borderRadius: "10px",
+                                            }}
                                             className="flex gap-2 w-full items-center  h-full"
                                         >
                                             <textarea
@@ -370,8 +374,13 @@ export default function Home() {
                                                 </button>
                                             ) : null}
                                         </form>
-                                        <div className="w-full flex text-center  justify-center items-center">
-                                            <p>Power by XUSA AA </p>
+                                        <div className="w-full flex text-center justify-center items-center py-1">
+                                            <p className="text-xs">
+                                                Power by{" "}
+                                                <span className="text-[#1e6bd8]">
+                                                    SIVE
+                                                </span>{" "}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
