@@ -1,10 +1,13 @@
 .main {
     position: absolute;
-    bottom: 10px;
+
+    bottom: 0;
+
     right: 30px;
-    height: 600px;
+    height: 95%;
     width: 460px;
     display: grid;
+    font-family: "Inter", sans-serif !important;
 
     grid-template-rows: 1fr auto;
     margin: 0.5rem;
@@ -14,7 +17,7 @@
 
 .cloudform {
     background: white;
-
+    font-family: "Inter", sans-serif;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -212,7 +215,7 @@
 
 .cloud {
     background: #ffffff;
-    height: 350px;
+    height: 60%;
     width: 100%;
     /* border: 1px solid #d9d9e3; */
     display: flex;
@@ -266,6 +269,138 @@
     white-space: pre-wrap !important;
   } */
 
+/* ========================= */
+/* ========================= */
+
+.messageTime {
+    width: 100%;
+    text-align: center;
+    color: gray;
+}
+
+/* ========================= */
+/* ========================= */
+/* ==========     DEMO MESSAGE BUTTON      =============== */
+/* ========================= */
+/* ========================= */
+/* ========================= */
+/* ========================= */
+/* ========================= */
+/* ========================= */
+
+.mainDemoMessage {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+}
+
+.demoMessageAllButtonWrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.demoMessageAllButton {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 50%;
+    gap: 10px;
+
+    align-items: center;
+}
+
+.demoMessageAllButton button {
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    border: 2px solid #1e6bd8;
+    background: white;
+    color: #1e6bd8;
+    font-weight: 400;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.demoMessageAllButton button:hover {
+    cursor: pointer;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* LOADER */
+.ldsEllipsis {
+    display: inline-block;
+    position: relative;
+    width: 70px;
+    height: 40px;
+    padding: 0.8rem 0;
+    margin-left: 10px;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+}
+.ldsEllipsis div {
+    position: absolute;
+    top: 50%;
+
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: darkgray;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.ldsEllipsis div:nth-child(1) {
+    left: 8px;
+    animation: ldsEllipsis1 0.6s infinite;
+}
+.ldsEllipsis div:nth-child(2) {
+    left: 8px;
+    animation: ldsEllipsis2 0.6s infinite;
+}
+.ldsEllipsis div:nth-child(3) {
+    left: 32px;
+    animation: ldsEllipsis2 0.6s infinite;
+}
+.ldsEllipsis div:nth-child(4) {
+    left: 56px;
+    animation: ldsEllipsis3 0.6s infinite;
+}
+@keyframes ldsEllipsis1 {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes ldsEllipsis3 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+@keyframes ldsEllipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(24px, 0);
+    }
+}
+
+/* ========================= */
+/* ========================= */
+/* ========================= */
+/* ========================= */
+/* ========================= */
+/* ========================= */
+/* ========================= */
 /* ========================= */
 
 .chatbutton {
