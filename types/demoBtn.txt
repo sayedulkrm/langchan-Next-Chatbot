@@ -1,0 +1,69 @@
+  <div className={styles.mainDemoMessage}>
+                                    {demoMessageBtn ? (
+                                        <div
+                                            className={
+                                                styles.demoMessageAllButtonWrapper
+                                            }
+                                        >
+                                            <div
+                                                className={
+                                                    styles.demoMessageAllButton
+                                                }
+                                            >
+                                                <button
+                                                    value={"About Chatbot"}
+                                                    onClick={(e) =>
+                                                        handleDemoMessageClick(
+                                                            e
+                                                        )
+                                                    }
+                                                >
+                                                    🔥 About Chatbot
+                                                </button>
+
+                                                <button
+                                                    value={"Contact us"}
+                                                    onClick={(e) =>
+                                                        handleDemoMessageClick(
+                                                            e
+                                                        )
+                                                    }
+                                                >
+                                                    ✉️ Contact us
+                                                </button>
+
+                                                {/*  */}
+                                            </div>
+
+                                            <div
+                                                className={
+                                                    styles.demoMessageAllButton
+                                                }
+                                            >
+                                                <button
+                                                    value={"Free trail"}
+                                                    onClick={(e) =>
+                                                        handleDemoMessageClick(
+                                                            e
+                                                        )
+                                                    }
+                                                >
+                                                    ⚡ Free trail
+                                                </button>
+
+                                                <button
+                                                    value={"Pricing"}
+                                                    onClick={(e) =>
+                                                        handleDemoMessageClick(
+                                                            e
+                                                        )
+                                                    }
+                                                >
+                                                    🏷️ Pricing
+                                                </button>
+
+                                                {/*  */}
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </div>

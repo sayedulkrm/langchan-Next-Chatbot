@@ -1,10 +1,10 @@
-import { Inter } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 
 interface LayoutProps {
     children?: React.ReactNode;
 }
 
-const inter = Inter({
+const noto = Noto_Sans({
     subsets: ["latin"],
     weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
@@ -19,7 +19,7 @@ export default function Layout({ children }: LayoutProps) {
 
             <div>
                 <main
-                    className={`${inter.className} min-h-screen flex flex-col`}
+                    className={`${noto.className} min-h-screen flex flex-col`}
                 >
                     {children}
                 </main>

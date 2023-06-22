@@ -6,6 +6,7 @@ import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import LoadingDots from "@/components/ui/LoadingDots";
 import { Document } from "langchain/document";
+import chatSVG from "../public/eeee.svg";
 
 import ChatOpenIcon from "../public/chatbox-icon.svg";
 import {
@@ -19,8 +20,12 @@ import { format } from "date-fns";
 export default function Home() {
     const [chatOpen, setChatOpen] = useState<boolean>(false);
     const [showSendButton, setShowSendButton] = useState<boolean>(false);
-    const [demoMessageBtn, setDemoMessageBtn] = useState<boolean>(true);
-    const [demoMessage, setDemoMessage] = useState<any>("");
+    const [clearingHistory, setClearingHistory] = useState<boolean>(false);
+    const [hoveredMessageIndex, setHoveredMessageIndex] = useState<
+        number | null
+    >(null);
+
+    // const [demoMessageBtn, setDemoMessageBtn] = useState<boolean>(true);
 
     const [query, setQuery] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -39,7 +44,7 @@ export default function Home() {
     }>({
         messages: [
             {
-                message: "Hello!👋 I'm Mr.SIVE 🤖. Nice to meet you!",
+                message: "Hello!👋 I'm Zara. Nice to meet you!",
                 type: "apiMessage",
                 time: currentTime,
                 day: currentDay,
@@ -74,114 +79,164 @@ export default function Home() {
         return format(currentDate, "EEEE"); // Format the day name as desired
     }
 
-    const handleDemoMessageClick = async (e: any) => {
-        e.preventDefault();
+    // const handleDemoMessageClick = async (e: any) => {
+    //     e.preventDefault();
 
-        setError(null);
-        const apibtnmessage = e.target.value;
-        const btnMessage = apibtnmessage.trim();
+    //     setError(null);
+    //     const apibtnmessage = e.target.value;
+    //     const btnMessage = apibtnmessage.trim();
 
-        console.log(btnMessage);
-        const currentTime = getCurrentTime();
-        const currentDay = getCurrentDay();
+    //     console.log(btnMessage);
+    //     const currentTime = getCurrentTime();
+    //     const currentDay = getCurrentDay();
 
-        setMessageState((state) => ({
-            ...state,
-            messages: [
-                ...state.messages,
-                {
-                    type: "userMessage",
-                    message: btnMessage,
-                    time: currentTime,
-                    day: currentDay,
-                },
-            ],
-        }));
+    //     setMessageState((state) => ({
+    //         ...state,
+    //         messages: [
+    //             ...state.messages,
+    //             {
+    //                 type: "userMessage",
+    //                 message: btnMessage,
+    //                 time: currentTime,
+    //                 day: currentDay,
+    //             },
+    //         ],
+    //     }));
 
-        setLoading(true);
-        setApiLoading(true);
-        setDemoMessageBtn(false);
-        setQuery("");
+    //     setLoading(true);
+    //     setApiLoading(true);
+    //     // setDemoMessageBtn(false);
+    //     setQuery("");
 
-        try {
-            const response = await fetch("/api/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    btnMessage,
-                    history,
-                }),
-            });
-            const data = await response.json();
-            console.log("data", data);
+    //     try {
+    //         const response = await fetch("/api/chat", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify({
+    //                 btnMessage,
+    //                 history,
+    //             }),
+    //         });
+    //         const data = await response.json();
+    //         console.log("data", data);
 
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setMessageState((state) => ({
-                    ...state,
-                    messages: [
-                        ...state.messages,
-                        {
-                            type: "apiMessage",
-                            message: data.text,
-                            sourceDocs: data.sourceDocuments,
-                        },
-                    ],
-                    history: [...state.history, [btnMessage, data.text]],
-                }));
-            }
-            console.log("messageState", messageState);
+    //         if (data.error) {
+    //             setError(data.error);
+    //         } else {
+    //             setMessageState((state) => ({
+    //                 ...state,
+    //                 messages: [
+    //                     ...state.messages,
+    //                     {
+    //                         type: "apiMessage",
+    //                         message: data.text,
+    //                         sourceDocs: data.sourceDocuments,
+    //                     },
+    //                 ],
+    //                 history: [...state.history, [btnMessage, data.text]],
+    //             }));
+    //         }
+    //         console.log("messageState", messageState);
 
-            setLoading(false);
-            setApiLoading(false);
-            setDemoMessageBtn(false);
+    //         setLoading(false);
+    //         setApiLoading(false);
+    //         // setDemoMessageBtn(false);
 
-            //scroll to bottom
-            messageListRef.current?.scrollTo(
-                0,
-                messageListRef.current.scrollHeight
-            );
-        } catch (error) {
-            setLoading(false);
-            setApiLoading(false);
-            setDemoMessageBtn(false);
+    //         //scroll to bottom
+    //         messageListRef.current?.scrollTo(
+    //             0,
+    //             messageListRef.current.scrollHeight
+    //         );
+    //     } catch (error) {
+    //         setLoading(false);
+    //         setApiLoading(false);
+    //         // setDemoMessageBtn(false);
 
-            setError(
-                "An error occurred while fetching the data. Please try again."
-            );
-            console.log("error", error);
-        }
-    };
+    //         setError(
+    //             "An error occurred while fetching the data. Please try again."
+    //         );
+    //         console.log("error", error);
+    //     }
+    // };
+    //
+    //
+    //
+    //
+    //
+    //
+    // =================================
+    //
 
     const HandleClearHistory = (): void => {
-        setMessageState((state) => ({
-            ...state,
-            history: [],
-            messages: [
-                {
-                    message: "Hello!👋 I'm Mr.SIVE 🤖. Nice to meet you!",
-                    type: "apiMessage",
-                    time: currentTime,
-                    day: currentDay,
-                    sourceDocs: [],
-                },
-                {
-                    message: "What brought you here today?",
-                    type: "apiMessage",
-                    time: currentTime,
-                    day: currentDay,
-                    sourceDocs: [],
-                },
-            ],
-        }));
-
-        setLoading(false);
-        setApiLoading(false);
-        setDemoMessageBtn(true);
+        setClearingHistory(true);
+        setTimeout(() => {
+            setMessageState((state) => ({
+                ...state,
+                history: [],
+                messages: [
+                    // {
+                    //     message: "Hello!👋 I'm Mr.SIVE 🤖. Nice to meet you!",
+                    //     type: "apiMessage",
+                    //     time: currentTime,
+                    //     day: currentDay,
+                    //     sourceDocs: [],
+                    // },
+                    // {
+                    //     message: "What brought you here today?",
+                    //     type: "apiMessage",
+                    //     time: currentTime,
+                    //     day: currentDay,
+                    //     sourceDocs: [],
+                    // },
+                    {
+                        message: "Hi there!",
+                        type: "apiMessage",
+                        time: currentTime,
+                        day: currentDay,
+                        sourceDocs: [],
+                    },
+                ],
+            }));
+            setLoading(false);
+            setApiLoading(false);
+            setClearingHistory(false);
+        }, 500); // Delay of 500 milliseconds before clearing the history
     };
+
+    //
+    //
+    //
+    //
+    //
+    //
+    // const HandleClearHistory = (): void => {
+    //     setMessageState((state) => ({
+    //         ...state,
+    //         history: [],
+    //         messages: [
+    //             {
+    //                 message: "Hello!👋 I'm Mr.SIVE 🤖. Nice to meet you!",
+    //                 type: "apiMessage",
+    //                 time: currentTime,
+    //                 day: currentDay,
+    //                 sourceDocs: [],
+    //             },
+    //             {
+    //                 message: "What brought you here today?",
+    //                 type: "apiMessage",
+    //                 time: currentTime,
+    //                 day: currentDay,
+    //                 sourceDocs: [],
+    //             },
+    //         ],
+    //     }));
+
+    //     setLoading(false);
+    //     setApiLoading(false);
+    //     // setDemoMessageBtn(true);
+    // };
 
     const HandleChatOpen = (): void => {
         setChatOpen(!chatOpen);
@@ -220,7 +275,7 @@ export default function Home() {
         setLoading(true);
         setApiLoading(true);
         setQuery("");
-        setDemoMessageBtn(false);
+        // setDemoMessageBtn(false);
 
         try {
             const response = await fetch("/api/chat", {
@@ -297,11 +352,11 @@ export default function Home() {
                     <div className={styles.main}>
                         {chatOpen ? (
                             <div className={`${styles.sidebar}`}>
-                                <div className="chatbox-header flex bg-[#1E6BD8] lg:h-20 sm:h-16 gap-2 justify-between items-center lg:rounded-t-xl sm:rounded-none p-3 text-white">
-                                    <div className="chatbox-image-header flex items-center justify-start gap-2">
+                                <div className="chatbox-header flex bg-[#1E6BD8] lg:h-20 sm:h-16 gap-2 justify-between items-center lg:rounded-t-xl md:rounded-t-xl sm:rounded-none p-3 text-white">
+                                    <div className="chatbox-image-header flex items-center justify-start gap-2 ">
                                         <div className="w-auto relative">
                                             <img
-                                                src="/bot-image.png"
+                                                src="/bot.png"
                                                 alt="image"
                                                 className="w-10 lg:h-12 lg:w-12 sm:h-5 sm:w-5 rounded-full"
                                             />
@@ -309,7 +364,7 @@ export default function Home() {
                                             <div className=" w-3 h-3 bg-[#00ff00] absolute bottom-0 right-0 rounded-full"></div>
                                         </div>
                                         <div className="flex flex-col ">
-                                            <h4 className="chatbox-heading-header font-bold lg:text-xl sm:text-lg ">
+                                            <h4 className="chatbox-heading-header font-semibold lg:text-xl sm:text-lg ">
                                                 Chat support
                                             </h4>
                                             <h6>online</h6>
@@ -375,11 +430,11 @@ export default function Home() {
                                                 icon = (
                                                     <Image
                                                         key={index}
-                                                        src="/bot-image.png" //image of the AI/Business
+                                                        src="/bot.png" //image of the AI/Business
                                                         alt="AI"
                                                         width="25"
                                                         height="25"
-                                                        className=""
+                                                        className="rounded-full"
                                                     />
                                                 );
                                                 className = styles.apimessage;
@@ -390,25 +445,51 @@ export default function Home() {
                                             return (
                                                 // <div className="flex items-end mb-3 gap-2">
                                                 //     {icon}
-                                                <>
+                                                <div
+                                                    className={`${
+                                                        clearingHistory
+                                                            ? styles.clearingHistory
+                                                            : ""
+                                                    }`}
+                                                    key={index}
+                                                >
                                                     <p
                                                         className={
                                                             styles.messageTime
                                                         }
                                                     >
-                                                        {message.time} -{" "}
-                                                        {message.day}
+                                                        {" "}
+                                                        {format(
+                                                            new Date(),
+                                                            "MMMM d"
+                                                        )}
+                                                        - {message.day}
                                                     </p>
 
                                                     <div
                                                         key={`chatMessage-${index}`}
                                                         className={className}
+                                                        // className={`${className} ${
+                                                        //     clearingHistory
+                                                        //         ? styles.clearingHistory
+                                                        //         : ""
+                                                        // }`}
                                                     >
                                                         {icon}
 
                                                         <div
                                                             className={
                                                                 styles.markdownanswer
+                                                            }
+                                                            onMouseEnter={() =>
+                                                                setHoveredMessageIndex(
+                                                                    index
+                                                                )
+                                                            }
+                                                            onMouseLeave={() =>
+                                                                setHoveredMessageIndex(
+                                                                    null
+                                                                )
                                                             }
                                                         >
                                                             <ReactMarkdown linkTarget="_blank">
@@ -417,6 +498,16 @@ export default function Home() {
                                                                 }
                                                             </ReactMarkdown>
                                                         </div>
+                                                        {hoveredMessageIndex ===
+                                                            index && (
+                                                            <p
+                                                                className={
+                                                                    styles.messageHoverTime
+                                                                }
+                                                            >
+                                                                {message.time}
+                                                            </p>
+                                                        )}
                                                         {/* {message.sourceDocs && (      //if you want sources displayed
                       <div className="p-5" key={`sourceDocsAccordion-${index}`}>
                         <Accordion type="single" collapsible className="flex-col">
@@ -441,7 +532,7 @@ export default function Home() {
                       </div>
                     )} */}
                                                     </div>
-                                                </>
+                                                </div>
                                                 // </div>
                                             );
                                         })}
@@ -449,76 +540,9 @@ export default function Home() {
                                 </div>
 
                                 {/* ==================================== */}
+                                {/* ==================================== */}
+                                {/* ==================================== */}
 
-                                <div className={styles.mainDemoMessage}>
-                                    {demoMessageBtn ? (
-                                        <div
-                                            className={
-                                                styles.demoMessageAllButtonWrapper
-                                            }
-                                        >
-                                            <div
-                                                className={
-                                                    styles.demoMessageAllButton
-                                                }
-                                            >
-                                                <button
-                                                    value={"About Chatbot"}
-                                                    onClick={(e) =>
-                                                        handleDemoMessageClick(
-                                                            e
-                                                        )
-                                                    }
-                                                >
-                                                    🔥 About Chatbot
-                                                </button>
-
-                                                <button
-                                                    value={"Contact us"}
-                                                    onClick={(e) =>
-                                                        handleDemoMessageClick(
-                                                            e
-                                                        )
-                                                    }
-                                                >
-                                                    ✉️ Contact us
-                                                </button>
-
-                                                {/*  */}
-                                            </div>
-
-                                            <div
-                                                className={
-                                                    styles.demoMessageAllButton
-                                                }
-                                            >
-                                                <button
-                                                    value={"Free trail"}
-                                                    onClick={(e) =>
-                                                        handleDemoMessageClick(
-                                                            e
-                                                        )
-                                                    }
-                                                >
-                                                    ⚡ Free trail
-                                                </button>
-
-                                                <button
-                                                    value={"Pricing"}
-                                                    onClick={(e) =>
-                                                        handleDemoMessageClick(
-                                                            e
-                                                        )
-                                                    }
-                                                >
-                                                    🏷️ Pricing
-                                                </button>
-
-                                                {/*  */}
-                                            </div>
-                                        </div>
-                                    ) : null}
-                                </div>
                                 {/* ================================================= */}
                                 {/* ================================================= */}
                                 {/* ================================================= */}
@@ -616,13 +640,21 @@ export default function Home() {
                                                 </button>
                                             ) : null}
                                         </form>
-                                        <div className="w-full flex text-center justify-center cursor-pointer bg-[rgb(250,250,250,0.8)] hover:bg-[rgb(245,245,245)] items-center py-1 rounded mt-2">
-                                            <p className="text-xs">
-                                                Power by 🚀
-                                                <span className="text-[#1e6bd8]">
-                                                    SIVE
-                                                </span>{" "}
-                                            </p>
+                                        <div className="w-full flex text-center justify-center cursor-pointer bg-[rgb(250,250,250,0.8)] hover:bg-[rgb(245,245,245)] gap-2 items-center py-1 rounded mt-2">
+                                            <p className="text-xs">Power by</p>
+                                            <svg
+                                                height="13"
+                                                width="15"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    d="M10.82 9.64l3.76-.4-.94-8.86L.74 1.74l.93 8.86 4.24-.45 2.77 2.72z"
+                                                    fill="#7f95ab"
+                                                />
+                                            </svg>
+                                            <p className="text-[#1e6bd8]">
+                                                SIVE
+                                            </p>{" "}
                                         </div>
                                     </div>
                                 </div>
@@ -638,33 +670,31 @@ export default function Home() {
                             </div>
                         ) : null}
 
-                        {chatOpen ? null : (
-                            // (
-                            //     <button
-                            //         onClick={HandleChatOpen}
-                            //         className={` flex items-center justify-center self-end p-4 rounded-full bg-[#1e6bd8] hover:bg-[#0b54bb] shadow-lg lg:block md:block hidden z-10`}
-                            //     >
-                            //         <svg
-                            //             width="30"
-                            //             height="30"
-                            //             viewBox="0 0 15 15"
-                            //             fill="none"
-                            //             style={{ color: "white" }}
-                            //             xmlns="http://www.w3.org/2000/svg"
-                            //         >
-                            //             <path
-                            //                 d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z"
-                            //                 fill="currentColor"
-                            //                 fillRule="evenodd"
-                            //                 clipRule="evenodd"
-                            //             ></path>
-                            //         </svg>
-                            //     </button>
-                            // )
-
+                        {chatOpen ? (
                             <button
                                 onClick={HandleChatOpen}
-                                className={` flex items-center justify-center self-end p-4 rounded-full bg-[#1e6bd8] hover:bg-[#0b54bb] shadow-lg sm:block mr-5 sm:mr-0 z-10`}
+                                className={` flex items-center justify-center self-end p-4 rounded-full bg-[#1e6bd8] hover:bg-[#0b54bb] shadow-lg lg:block md:block hidden z-10 mt-2`}
+                            >
+                                <svg
+                                    width="30"
+                                    height="30"
+                                    viewBox="0 0 15 15"
+                                    fill="none"
+                                    style={{ color: "white" }}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z"
+                                        fill="currentColor"
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                    ></path>
+                                </svg>
+                            </button>
+                        ) : (
+                            <button
+                                onClick={HandleChatOpen}
+                                className={` flex items-center justify-center self-end p-4 rounded-full bg-[#1e6bd8] hover:bg-[#0b54bb] shadow-lg sm:block mr-5 sm:mr-0 z-10 mt-2`}
                             >
                                 <svg
                                     width="30"
