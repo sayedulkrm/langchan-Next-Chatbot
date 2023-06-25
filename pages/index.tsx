@@ -18,6 +18,16 @@ import {
 import { format } from "date-fns";
 
 export default function Home() {
+    function getCurrentTime() {
+        const currentDate = new Date();
+        return format(currentDate, "hh:mm:ss aa"); // Format the time as desired
+    }
+
+    function getCurrentDay() {
+        const currentDate = new Date();
+        return format(currentDate, "EEEE"); // Format the day name as desired
+    }
+
     const [chatOpen, setChatOpen] = useState<boolean>(false);
     const [showSendButton, setShowSendButton] = useState<boolean>(false);
     const [clearingHistory, setClearingHistory] = useState<boolean>(false);
@@ -30,9 +40,9 @@ export default function Home() {
     const [query, setQuery] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [apiLoading, setApiLoading] = useState<boolean>(false);
-    const currentDate = new Date();
-    const currentTime = format(currentDate, "hh:mm:ss aa");
-    const currentDay = format(currentDate, "EEEE");
+    // const currentDate = new Date();
+    // const currentTime = format(currentDate, "hh:mm:ss aa");
+    // const currentDay = format(currentDate, "EEEE");
 
     const [error, setError] = useState<string | null>(null);
 
@@ -46,15 +56,15 @@ export default function Home() {
             {
                 message: "Hello!👋 I'm Zara. Nice to meet you!",
                 type: "apiMessage",
-                time: currentTime,
-                day: currentDay,
+                time: getCurrentTime(),
+                day: getCurrentDay(),
                 sourceDocs: [],
             },
             {
                 message: "What brought you here today?",
                 type: "apiMessage",
-                time: currentTime,
-                day: currentDay,
+                time: getCurrentTime(),
+                day: getCurrentDay(),
 
                 sourceDocs: [],
             },
@@ -68,16 +78,6 @@ export default function Home() {
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     // =========================
-
-    function getCurrentTime() {
-        const currentDate = new Date();
-        return format(currentDate, "hh:mm:ss aa"); // Format the time as desired
-    }
-
-    function getCurrentDay() {
-        const currentDate = new Date();
-        return format(currentDate, "EEEE"); // Format the day name as desired
-    }
 
     // const handleDemoMessageClick = async (e: any) => {
     //     e.preventDefault();
@@ -193,8 +193,8 @@ export default function Home() {
                     {
                         message: "Hi there!",
                         type: "apiMessage",
-                        time: currentTime,
-                        day: currentDay,
+                        time: getCurrentTime(),
+                        day: getCurrentDay(),
                         sourceDocs: [],
                     },
                 ],
@@ -442,6 +442,13 @@ export default function Home() {
                                                 // The latest message sent by the user will have a consistent styling
                                                 className = styles.usermessage;
                                             }
+
+                                            // Check if it's the first message of the day
+                                            const isFirstMessageOfDay =
+                                                index === 0 ||
+                                                message.day !==
+                                                    messages[index - 1].day;
+
                                             return (
                                                 // <div className="flex items-end mb-3 gap-2">
                                                 //     {icon}
@@ -453,7 +460,7 @@ export default function Home() {
                                                     }`}
                                                     key={index}
                                                 >
-                                                    <p
+                                                    {/* <p
                                                         className={
                                                             styles.messageTime
                                                         }
@@ -464,7 +471,20 @@ export default function Home() {
                                                             "MMMM d"
                                                         )}
                                                         - {message.day}
-                                                    </p>
+                                                    </p> */}
+                                                    {isFirstMessageOfDay && (
+                                                        <p
+                                                            className={
+                                                                styles.messageTime
+                                                            }
+                                                        >
+                                                            {format(
+                                                                new Date(),
+                                                                "MMMM d"
+                                                            )}{" "}
+                                                            - {message.day}
+                                                        </p>
+                                                    )}
 
                                                     <div
                                                         key={`chatMessage-${index}`}
@@ -564,10 +584,9 @@ export default function Home() {
                                         <form
                                             onSubmit={handleSubmit}
                                             style={{
-                                                border: "1px solid lightgray",
-                                                borderRadius: "10px",
+                                                borderTop: "1px solid #f2f2f2",
                                             }}
-                                            className="flex gap-2 w-full items-center  h-full"
+                                            className="flex gap-2 w-full items-center h-full lg:h-[45px] "
                                         >
                                             <textarea
                                                 disabled={loading}
