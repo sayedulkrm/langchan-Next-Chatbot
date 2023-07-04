@@ -556,6 +556,15 @@ export default function Home() {
                                                 // </div>
                                             );
                                         })}
+
+                                        {apiLoading && (
+                                            <div className={styles.ldsEllipsis}>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -566,15 +575,6 @@ export default function Home() {
                                 {/* ================================================= */}
                                 {/* ================================================= */}
                                 {/* ================================================= */}
-
-                                {apiLoading && (
-                                    <div className={styles.ldsEllipsis}>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                )}
 
                                 {/* ================================================= */}
                                 {/* ================================================= */}
@@ -678,13 +678,13 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div>
-                                    {error && (
+                                    {/* {error && (
                                         <div className="border border-red-400 rounded-md p-4">
                                             <p className="text-red-500">
                                                 {error}
                                             </p>
                                         </div>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
                         ) : null}
