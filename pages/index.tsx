@@ -176,20 +176,6 @@ export default function Home() {
                 ...state,
                 history: [],
                 messages: [
-                    // {
-                    //     message: "Hello!👋 I'm Mr.SIVE 🤖. Nice to meet you!",
-                    //     type: "apiMessage",
-                    //     time: currentTime,
-                    //     day: currentDay,
-                    //     sourceDocs: [],
-                    // },
-                    // {
-                    //     message: "What brought you here today?",
-                    //     type: "apiMessage",
-                    //     time: currentTime,
-                    //     day: currentDay,
-                    //     sourceDocs: [],
-                    // },
                     {
                         message: "Hi there!",
                         type: "apiMessage",
@@ -301,6 +287,8 @@ export default function Home() {
                         {
                             type: "apiMessage",
                             message: data.text,
+                            time: currentTime,
+                            day: currentDay,
                             sourceDocs: data.sourceDocuments,
                         },
                     ],
@@ -460,18 +448,6 @@ export default function Home() {
                                                     }`}
                                                     key={index}
                                                 >
-                                                    {/* <p
-                                                        className={
-                                                            styles.messageTime
-                                                        }
-                                                    >
-                                                        {" "}
-                                                        {format(
-                                                            new Date(),
-                                                            "MMMM d"
-                                                        )}
-                                                        - {message.day}
-                                                    </p> */}
                                                     {isFirstMessageOfDay && (
                                                         <p
                                                             className={
